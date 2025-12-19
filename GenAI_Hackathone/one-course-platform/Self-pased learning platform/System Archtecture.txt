@@ -1,0 +1,22 @@
+ai-learning-platform/
+├── backend/
+│   ├── app/
+│   │   ├── main.py
+│   │   ├── api.py
+│   │   ├── llm/
+│   │   │   └── byllm_client.py
+│   │   ├── jac/
+│   │   │   ├── learning.jac
+│   │   │   └── users.jac
+│   │   └── db.py
+│   ├── requirements.txt
+│   └── Dockerfile
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── api.js
+│   │   └── components/Chat.jsx
+│   ├── package.json
+│   └── vite.config.js
+└── README.md
+```

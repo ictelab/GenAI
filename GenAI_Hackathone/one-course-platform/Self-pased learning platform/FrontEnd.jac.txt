@@ -1,0 +1,72 @@
+##  Frontend (React + Vite)
+
+### package.json
+```json
+{
+  "name": "ai-learning-frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
+```
+
+---
+
+###  api.js
+```javascript
+export async function sendPrompt(question) {
+  const res = await fetch("http://localhost:8000/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question })
+  });
+  return res.json();
+}
+```
+
+---
+
+### Chat.jsx
+```jsx
+import { useState } from "react";
+import { sendPrompt } from "../api";
+
+export default function Chat() {
+  const [q, setQ] = useState("");
+  const [a, setA] = useState("");
+
+  const ask = async () => {
+    const res = await sendPrompt(q);
+    setA(res.response);
+  };
+
+  return (
+    <div>
+      <textarea onChange={e => setQ(e.target.value)} />
+      <button onClick={ask}>Ask AI Tutor</button>
+      <p>{a}</p>
+    </div>
+  );
+}
+```
+
+---
+
+### App.jsx
+```jsx
+import Chat from "./components/Chat";
+
+export default function App() {
+  return (
+    <div>
+      <h1>AI Learning Platform</h1>
+      <Chat />
+    </div>
+  );
+}
+```

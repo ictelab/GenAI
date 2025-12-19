@@ -1,0 +1,83 @@
+ Backend (FastAPI + JAC + ByLLM)
+
+###  requirements.txt
+```txt
+fastapi
+uvicorn
+jaseci
+byllm
+pydantic
+python-dotenv
+```
+
+---
+
+###  main.py
+```python
+from fastapi import FastAPI
+from app.api import router
+
+app = FastAPI(title="AI Learning Platform")
+app.include_router(router)
+```
+
+---
+
+### api.py
+```python
+from fastapi import APIRouter
+from pydantic import BaseModel
+from app.llm.byllm_client import ask_llm
+from jaseci import Jaseci
+
+router = APIRouter()
+js = Jaseci()
+js.load("app/jac/learning.jac")
+
+class Prompt(BaseModel):
+    question: str
+
+@router.post("/chat")
+def chat(prompt: Prompt):
+    answer = ask_llm(prompt.question)
+    return {"response": answer}
+```
+
+---
+
+###  ByLLM Client (byllm_client.py)
+```python
+from byllm import LLM
+
+llm = LLM(
+    provider="openai",
+    model="gpt-4",
+    temperature=0.3
+)
+
+def ask_llm(prompt: str) -> str:
+    return llm(prompt)
+
+
+## JAC Logic (AI Learning Flow)
+
+### learning.jac
+```jac
+walker tutor {
+    has question;
+
+    can answer {
+        report "AI Tutor processing: " + question;
+    }
+}
+```
+
+---
+
+### users.jac
+```jac
+node student {
+    has name;
+    has progress;
+}
+```
